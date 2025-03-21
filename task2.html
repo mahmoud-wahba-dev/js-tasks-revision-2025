@@ -65,7 +65,7 @@
         <div class="row row-cols-1 row-cols-sm-2 gy-3 flex-wrap">
           <div class="col">
             <button
-              onclick="calculate()"
+              onclick="calculate('add')"
               id="add_btn"
               type="submit"
               class="btn btn-primary w-100 h_50"
@@ -75,6 +75,7 @@
           </div>
           <div class="col">
             <button
+              onclick="calculate('subtract')"
               id="add_btn"
               type="submit"
               class="btn btn-primary w-100 h_50"
@@ -84,6 +85,7 @@
           </div>
           <div class="col">
             <button
+              onclick="calculate('multiply')"
               id="add_btn"
               type="submit"
               class="btn btn-primary w-100 h_50"
@@ -94,6 +96,7 @@
 
           <div class="col">
             <button
+              onclick="calculate('divide')"
               id="add_btn"
               type="submit"
               class="btn btn-primary w-100 h_50"
@@ -106,7 +109,7 @@
       </form>
 
       <div class="my-5 p-3 rounded-3">
-        <p class="mb-0" id="result">sssssss</p>
+        <p class="mb-0 alert" id="result_container"></p>
       </div>
     </div>
 
@@ -118,47 +121,74 @@
     ></script>
     <script>
       let showMsgBtn = document.getElementById("show_msg_btn");
-      let result = document.getElementById("result");
+      let resultContainer = document.getElementById("result_container");
       let form = document.getElementById("form");
-
+      let result_var;
       form.addEventListener("submit", function (e) {
         e.preventDefault();
       });
-      function calculate(e) {
-        let firstNum = Number(
-          document.getElementById("first_num").value.trim()
-        );
-        let secondNum = Number(
-          document.getElementById("second_num").value.trim()
-        );
-        // firstNum || secondNum == ""  why error here
-        if (firstNum == "" || secondNum == "") {
-          result.innerText = "من فضلك، أدخل أرقامًا صالحة.  ";
-          result.classList.add("alert-danger", "alert");
+      function calculate(key) {
+        let firstNum = document.getElementById("first_num").value.trim();
+
+        let secondNum = document.getElementById("second_num").value.trim();
+
+        console.log(firstNum, secondNum);
+
+        // or if (firstNum.legth || secondNum.legth)
+        if (firstNum === "" || secondNum === "") {
+          resultContainer.innerText = "من فضلك، أدخل أرقامًا صالحة.  ";
+          resultContainer.classList.add("alert-danger");
+          console.log(firstNum);
+          console.log(firstNum.legth);
+
+          return;
         } else {
-          console.log(typeof firstNum + " => " + secondNum);
-          
+          let firstNumber = Number(firstNum);
+          let secondNumber = Number(secondNum);
+          console.log("else");
+
+          switch (key) {
+            case "add":
+              result_var = firstNumber + secondNumber;
+              resultContainer.innerHTML = ` النتيحه : ${result_var} `;
+              resultContainer.classList.add("alert-success");
+              resultContainer.classList.remove("alert-danger");
+              break;
+
+            case "subtract":
+              result_var = firstNumber - secondNumber;
+              resultContainer.innerHTML = ` النتيحه : ${result_var} `;
+              resultContainer.classList.add("alert-success");
+              resultContainer.classList.remove("alert-danger");
+              break;
+
+            case "multiply":
+              result_var = firstNumber * secondNumber;
+              resultContainer.innerHTML = ` النتيحه : ${result_var}`;
+              resultContainer.classList.add("alert-success");
+              resultContainer.classList.remove("alert-danger");
+              break;
+
+            case "divide":
+              if (secondNumber === 0) {
+                resultContainer.innerText = "خطأ: القسمة على صفر غير مسموح بها";
+                resultContainer.classList.add("alert-danger");
+                return;
+              }
+
+              result_var = firstNumber / secondNumber;
+              console.log(result_var);
+
+              resultContainer.innerHTML = ` النتيحه : ${result_var} `;
+              resultContainer.classList.add("alert-success");
+              resultContainer.classList.remove("alert-danger");
+              break;
+            default:
+              resultContainer.innerText = "عمليه غير مغروفه";
+              break;
+          }
         }
       }
-
-      // showMsgBtn.addEventListener("click", function (e) {
-      //   let name = document.getElementById("name").value.trim();
-      //   let age = document.getElementById("age").value.trim();
-      //   let hobby = document.getElementById("hobby").value.trim();
-
-      //   if (name == "" || age == "" || hobby == "") {
-      //     result.parentElement.classList.add("bg-danger");
-      //     result.parentElement.classList.remove("bg-danger");
-
-      //     result.innerHTML = "برجاء مليء جميع الحقول";
-      //   } else {
-      //     e.preventDefault();
-      //     result.parentElement.classList.add("bg-info");
-      //     result.parentElement.classList.remove("bg-danger");
-
-      //     result.innerHTML = ` اهلا يا ${name} عمرك ${age} و هوايتك المفضله هي ${hobby} `;
-      //   }
-      // });
     </script>
   </body>
 </html>
